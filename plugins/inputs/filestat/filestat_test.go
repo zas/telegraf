@@ -97,6 +97,7 @@ func TestNonExistentFile(t *testing.T) {
 	require.False(t, acc.HasField("filestat", "md5_sum"))
 	require.False(t, acc.HasField("filestat", "size_bytes"))
 	require.False(t, acc.HasField("filestat", "modification_time"))
+	require.False(t, acc.HasField("filestat", "age"))
 }
 
 func TestGatherGlob(t *testing.T) {
@@ -174,6 +175,7 @@ func TestModificationTime(t *testing.T) {
 	require.True(t, acc.HasPoint("filestat", tags1, "size_bytes", int64(0)))
 	require.True(t, acc.HasPoint("filestat", tags1, "exists", int64(1)))
 	require.True(t, acc.HasInt64Field("filestat", "modification_time"))
+	require.True(t, acc.HasInt64Field("filestat", "age"))
 }
 
 func TestNoModificationTime(t *testing.T) {
@@ -191,6 +193,7 @@ func TestNoModificationTime(t *testing.T) {
 	}
 	require.True(t, acc.HasPoint("filestat", tags1, "exists", int64(0)))
 	require.False(t, acc.HasInt64Field("filestat", "modification_time"))
+	require.False(t, acc.HasInt64Field("filestat", "age"))
 }
 
 func TestGetMd5(t *testing.T) {

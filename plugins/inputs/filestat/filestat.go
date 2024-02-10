@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"io"
 	"os"
+	"time"
 
 	"github.com/influxdata/telegraf"
 	"github.com/influxdata/telegraf/internal/globpath"
@@ -96,8 +97,10 @@ func (f *FileStat) Gather(acc telegraf.Accumulator) error {
 				}
 			} else {
 				f.filesWithErrors[fileName] = false
+				mtime := fileInfo.ModTime().UnixNano()
+				fields["modification_time"] = mtime
+				fields["age"] = time.Now().UnixNano() - mtime
 				fields["size_bytes"] = fileInfo.Size()
-				fields["modification_time"] = fileInfo.ModTime().UnixNano()
 			}
 
 			if f.Md5 {
